@@ -24,6 +24,7 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Monitor;
+import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.Platform;
@@ -1210,8 +1211,15 @@ abstract public class AbstractInformationControlManager {
 		if (fInformationControl != null) {
 			storeInformationControlBounds();
 			fInformationControl.setVisible(false);
-			if (fInformationControlCloser != null)
+			if (fInformationControlCloser != null) {
 				fInformationControlCloser.stop();
+			}
+			if (fInformationControl instanceof AbstractInformationControl infoControl) {
+				Shell shell= infoControl.getShell();
+				if (!shell.isDisposed()) {
+					shell.setVisible(false);
+				}
+			}
 		}
 		if (canClearDataOnHide()) {
 			fSubjectArea= null;
